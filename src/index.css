@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  overflow: hidden;
+}
+
+.mono {
+  font-family: 'Space Mono', monospace;
+}
