@@ -151,8 +151,8 @@ function PlayScreen({
 
   const distLabel =
     roundDist < 1
-      ? `${Math.round(roundDist * 1000)} m`
-      : `${Math.round(roundDist).toLocaleString()} km`;
+      ? `${Math.round(roundDist * 1000)} m (${(roundDist * 0.621371).toFixed(1)} mi)`
+      : `${Math.round(roundDist).toLocaleString()} km (${Math.round(roundDist * 0.621371).toLocaleString()} mi)`;
 
   const emoji =
     roundScore >= 4000
