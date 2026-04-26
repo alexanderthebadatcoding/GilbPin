@@ -169,7 +169,7 @@ export function CreatePin({ onBack }: Props) {
             style={{
               position: step === "preview" ? "absolute" : "relative",
               bottom: step === "preview" ? 16 : "auto",
-              right: step === "preview" ? 16 : "auto",
+              left: step === "preview" ? 6 : "auto",
               width: step === "preview" ? 200 : "100%",
               height: step === "preview" ? 150 : "100%",
               zIndex: step === "preview" ? 10 : "auto",
