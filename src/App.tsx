@@ -13,7 +13,7 @@ import {
 } from "./locations";
 import "./App.css";
 
-const ROUNDS = 3;
+const ROUNDS = 5;
 
 type Phase = "guessing" | "result" | "final";
 type AppMode = "home" | "play" | "play-custom" | "create";
@@ -150,8 +150,8 @@ function PlayScreen({
   };
 
   const distLabel =
-    roundDist < 1
-      ? `${Math.round(roundDist * 1000)} m (${(roundDist * 0.621371).toFixed(1)} mi)`
+    roundDist < 1.60934
+      ? `${Math.round(roundDist * 1093.61)} yd (${(roundDist * 0.621371).toFixed(2)} mi)`
       : `${Math.round(roundDist).toLocaleString()} km (${Math.round(roundDist * 0.621371).toLocaleString()} mi)`;
 
   const emoji =
