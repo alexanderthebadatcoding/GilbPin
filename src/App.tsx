@@ -151,7 +151,7 @@ function PlayScreen({
 
   const distLabel =
     roundDist < 1.60934
-      ? `${Math.round(roundDist * 1093.61)} yd (${(roundDist * 0.621371).toFixed(2)} mi)`
+      ? `${(roundDist).toFixed(2)} km (${Math.round(roundDist * 1093.61).toLocaleString()} yd)`
       : `${Math.round(roundDist).toLocaleString()} km (${Math.round(roundDist * 0.621371).toLocaleString()} mi)`;
 
   const emoji =
