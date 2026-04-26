@@ -8,7 +8,7 @@
   --text-muted: #888;
   --text-faint: #555;
   --accent: #e24b4a;
-  --green: #1D9E75;
+  --green: #1d9e75;
   --radius: 8px;
 }
 
@@ -101,7 +101,9 @@
   z-index: 10;
 }
 
-.result-emoji { font-size: 44px; }
+.result-emoji {
+  font-size: 44px;
+}
 
 .result-title {
   font-size: 20px;
@@ -162,6 +164,40 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .main {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .sv-panel {
+    border-right: none;
+    border-bottom: 0.5px solid var(--border);
+    min-height: 50vh;
+  }
+
+  .map-panel {
+    min-height: 42vh;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+    justify-content: stretch;
+  }
+
+  .controls button {
+    flex: 1 1 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
 /* Controls */
 .controls {
   display: flex;
@@ -187,8 +223,13 @@
   transition: opacity 0.15s;
 }
 
-.btn-primary:hover { opacity: 0.85; }
-.btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+.btn-primary:hover {
+  opacity: 0.85;
+}
+.btn-primary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 
 .btn-secondary {
   padding: 9px 13px;
@@ -198,12 +239,17 @@
   font-size: 12px;
   color: var(--text-muted);
   cursor: pointer;
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   transition: background 0.15s;
 }
 
-.btn-secondary:hover { background: var(--surface2); }
-.btn-secondary:disabled { opacity: 0.3; cursor: default; }
+.btn-secondary:hover {
+  background: var(--surface2);
+}
+.btn-secondary:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
 
 /* URL bar */
 .url-bar {
@@ -278,7 +324,9 @@
   white-space: nowrap;
   letter-spacing: 0.04em;
 }
-.btn-accent:hover { opacity: 0.85; }
+.btn-accent:hover {
+  opacity: 0.85;
+}
 
 .custom-pin-banner {
   display: flex;
@@ -322,9 +370,11 @@
   font-size: 11px;
   color: var(--text-muted);
   cursor: pointer;
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
 }
-.btn-back:hover { background: var(--surface2); }
+.btn-back:hover {
+  background: var(--surface2);
+}
 
 /* ── Create Pin page ─────────────────────────────────────────── */
 .create-pin-page {
@@ -348,8 +398,12 @@
   background: var(--border-strong);
   transition: background 0.2s;
 }
-.step-dot.active { background: var(--text); }
-.step-dot.done { background: var(--green); }
+.step-dot.active {
+  background: var(--text);
+}
+.step-dot.done {
+  background: var(--green);
+}
 
 .create-body {
   display: grid;
@@ -369,7 +423,7 @@
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.75);
+  background: rgba(0, 0, 0, 0.75);
   color: #ccc;
   font-size: 11px;
   padding: 6px 14px;
@@ -471,16 +525,25 @@
   font-size: 12px;
   outline: none;
 }
-.hint-input:focus { border-color: var(--text-muted); }
-.hint-input::placeholder { color: var(--text-faint); }
+.hint-input:focus {
+  border-color: var(--text-muted);
+}
+.hint-input::placeholder {
+  color: var(--text-faint);
+}
 
 .sidebar-actions {
   margin-top: auto;
   display: flex;
   gap: 8px;
 }
-.sidebar-actions .btn-primary { font-size: 12px; }
-.sidebar-actions .btn-secondary { font-size: 12px; flex-shrink: 0; }
+.sidebar-actions .btn-primary {
+  font-size: 12px;
+}
+.sidebar-actions .btn-secondary {
+  font-size: 12px;
+  flex-shrink: 0;
+}
 
 /* ── Share screen ────────────────────────────────────────────── */
 .share-screen {
@@ -533,7 +596,9 @@
   cursor: pointer;
   transition: border-color 0.15s;
 }
-.share-url-box:hover { border-color: var(--text-muted); }
+.share-url-box:hover {
+  border-color: var(--text-muted);
+}
 
 .share-url-text {
   flex: 1;
@@ -548,7 +613,7 @@
   color: var(--text-faint);
   white-space: nowrap;
   flex-shrink: 0;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .share-actions {
@@ -557,7 +622,9 @@
   width: 100%;
 }
 .share-actions .btn-secondary,
-.share-actions .btn-primary { font-size: 12px; }
+.share-actions .btn-primary {
+  font-size: 12px;
+}
 
 .btn-text {
   background: none;
@@ -565,7 +632,9 @@
   font-size: 11px;
   color: var(--text-faint);
   cursor: pointer;
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   margin-top: 4px;
 }
-.btn-text:hover { color: var(--text-muted); }
+.btn-text:hover {
+  color: var(--text-muted);
+}

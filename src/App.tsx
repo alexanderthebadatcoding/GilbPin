@@ -46,14 +46,14 @@ function HomeScreen({
             <div>
               <div
                 className="mono"
-                style={{ fontSize: 12, color: "var(--text)" }}
+                style={{ fontSize: 14, color: "var(--text)" }}
               >
                 Someone challenged you!
               </div>
               {customPin.hint !== "No hint given" && (
                 <div
                   style={{
-                    fontSize: 11,
+                    fontSize: 13,
                     color: "var(--text-muted)",
                     marginTop: 2,
                   }}
