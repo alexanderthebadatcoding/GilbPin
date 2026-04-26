@@ -79,10 +79,30 @@ export function CreatePin({ onBack }: Props) {
     }
   }, [step]);
 
-  // Load Street View preview - disabled for now, keeping map context instead
+  // Load Street View preview
   useEffect(() => {
-    // Map stays in memory but hidden during preview
-    // Repin restores the map context
+    if (
+      step === "preview" &&
+      mapsReady &&
+      pinLat !== null &&
+      pinLng !== null &&
+      svRef.current &&
+      !svPanoRef.current
+    ) {
+      const panorama = new google.maps.StreetViewPanorama(svRef.current, {
+        position: { lat: pinLat, lng: pinLng },
+        pov: { heading: 34, pitch: 10 },
+        zoom: 1,
+        addressControl: false,
+        fullscreenControl: false,
+        motionTrackingControl: false,
+        showRoadLabels: false,
+        linksControl: false,
+        panControl: false,
+        zoomControl: false,
+      });
+      svPanoRef.current = panorama;
+    }
   }, [step, mapsReady, pinLat, pinLng]);
 
   const shareUrl =
@@ -124,9 +144,41 @@ export function CreatePin({ onBack }: Props) {
       {/* Step: Pick location */}
       {(step === "pick" || step === "preview") && (
         <div className="create-body">
+          {step === "preview" && pinLat !== null && pinLng !== null && (
+            <>
+              <div className="preview-pane">
+                <div
+                  ref={svRef}
+                  className="street-view-preview"
+                  style={{ display: step === "preview" ? "block" : "none" }}
+                />
+              </div>
+
+              <button
+                className="preview-top-link btn-primary mono"
+                type="button"
+                onClick={() => setStep("share")}
+              >
+                Get link →
+              </button>
+            </>
+          )}
+
           <div
             className="create-map-wrap"
-            style={{ display: step === "pick" ? "block" : "none" }}
+            style={{
+              position: step === "preview" ? "absolute" : "relative",
+              bottom: step === "preview" ? 16 : "auto",
+              right: step === "preview" ? 16 : "auto",
+              width: step === "preview" ? 200 : "100%",
+              height: step === "preview" ? 150 : "100%",
+              zIndex: step === "preview" ? 10 : "auto",
+              borderRadius: step === "preview" ? 12 : 0,
+              overflow: "hidden",
+              boxShadow:
+                step === "preview" ? "0 18px 60px rgba(0,0,0,0.35)" : "none",
+              background: step === "preview" ? "#000" : "var(--surface)",
+            }}
           >
             <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
             {step === "pick" && pinLat === null && (
@@ -135,31 +187,6 @@ export function CreatePin({ onBack }: Props) {
               </div>
             )}
           </div>
-          {step === "preview" && (
-            <div
-              style={{
-                flex: 1,
-                background: "#1a1a1a",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ textAlign: "center" }}>
-                {!mapsReady && (
-                  <div>
-                    <span style={{ fontSize: 28 }}>🌍</span>
-                    <div
-                      className="mono"
-                      style={{ fontSize: 12, color: "#888" }}
-                    >
-                      Loading Street View…
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
           {step === "pick" && (
             <div className="create-sidebar">
               <div className="sidebar-inner">
