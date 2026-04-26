@@ -197,7 +197,7 @@
   }
 
   .sidebar-inner {
-    padding: 16px 14px;
+    padding: 2rem 1rem;
   }
 
   .sidebar-actions {
@@ -436,7 +436,7 @@
 
 .create-body {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 0.5fr;
   flex: 1;
   overflow: hidden;
 }
@@ -479,7 +479,7 @@
 }
 
 .sidebar-inner {
-  padding: 20px 16px;
+  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 14px;

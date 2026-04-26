@@ -21,6 +21,10 @@ export function CreatePin({ onBack }: Props) {
   const [pinLng, setPinLng] = useState<number | null>(null);
   const [hint, setHint] = useState("");
   const [copied, setCopied] = useState(false);
+  const [prevMapView, setPrevMapView] = useState<{
+    center: L.LatLngExpression;
+    zoom: number;
+  } | null>(null);
 
   const mapsReady = useGoogleMaps();
 
@@ -68,40 +72,17 @@ export function CreatePin({ onBack }: Props) {
     };
   }, []);
 
-  // Load Street View preview
+  // Keep Leaflet map size correct after returning from preview
   useEffect(() => {
-    if (
-      step !== "preview" ||
-      !mapsReady ||
-      !svRef.current ||
-      pinLat === null ||
-      pinLng === null
-    )
-      return;
+    if (step === "pick" && leafletRef.current) {
+      leafletRef.current.invalidateSize();
+    }
+  }, [step]);
 
-    const sv = new google.maps.StreetViewService();
-    sv.getPanorama(
-      { location: { lat: pinLat, lng: pinLng }, radius: 200 },
-      (data, status) => {
-        if (status === google.maps.StreetViewStatus.OK && svRef.current) {
-          svPanoRef.current = new google.maps.StreetViewPanorama(
-            svRef.current,
-            {
-              position: { lat: pinLat, lng: pinLng },
-              pov: { heading: 0, pitch: 0 },
-              zoom: 1,
-              addressControl: false,
-              fullscreenControl: false,
-              motionTrackingControl: false,
-              showRoadLabels: false,
-              linksControl: false,
-              panControl: false,
-              zoomControl: false,
-            },
-          );
-        }
-      },
-    );
+  // Load Street View preview - disabled for now, keeping map context instead
+  useEffect(() => {
+    // Map stays in memory but hidden during preview
+    // Repin restores the map context
   }, [step, mapsReady, pinLat, pinLng]);
 
   const shareUrl =
@@ -141,105 +122,145 @@ export function CreatePin({ onBack }: Props) {
       </header>
 
       {/* Step: Pick location */}
-      {step === "pick" && (
+      {(step === "pick" || step === "preview") && (
         <div className="create-body">
-          <div className="create-map-wrap">
+          <div
+            className="create-map-wrap"
+            style={{ display: step === "pick" ? "block" : "none" }}
+          >
             <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
-            {pinLat === null && (
+            {step === "pick" && pinLat === null && (
               <div className="map-prompt mono">
                 Click anywhere on the map to drop your pin
               </div>
             )}
           </div>
-          <div className="create-sidebar">
-            <div className="sidebar-inner">
-              <div className="sidebar-title mono">Drop a pin</div>
-              <p className="sidebar-body">
-                Click anywhere on the map to place your mystery location.
-                Friends will see Street View and have to guess where it is.
-              </p>
-
-              {pinLat !== null && (
-                <div className="coord-display mono">
-                  <div className="coord-row">
-                    <span className="coord-label">lat</span>
-                    <span className="coord-val">{"█".repeat(8)}</span>
-                  </div>
-                  <div className="coord-row">
-                    <span className="coord-label">lng</span>
-                    <span className="coord-val">{"█".repeat(8)}</span>
-                  </div>
-                  <div className="coord-note">coordinates hidden</div>
-                </div>
-              )}
-
-              <div className="sidebar-actions">
-                <button
-                  className="btn-primary mono"
-                  disabled={pinLat === null}
-                  onClick={() => setStep("preview")}
-                >
-                  Preview Street View →
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Step: Preview & add hint */}
-      {step === "preview" && pinLat !== null && pinLng !== null && (
-        <div className="create-body">
-          <div className="create-map-wrap">
+          {step === "preview" && (
             <div
-              ref={svRef}
-              style={{ width: "100%", height: "100%", background: "#1a1a1a" }}
-            />
-            {!mapsReady && (
-              <div className="sv-loading">
-                <span style={{ fontSize: 28 }}>🌍</span>
-                <span className="mono" style={{ fontSize: 12, color: "#888" }}>
-                  Loading…
-                </span>
-              </div>
-            )}
-          </div>
-          <div className="create-sidebar">
-            <div className="sidebar-inner">
-              <div className="sidebar-title mono">Preview</div>
-              <p className="sidebar-body">
-                This is what your friends will see. Look good? Add an optional
-                hint, then generate the link.
-              </p>
-
-              <label className="hint-label">
-                <span className="hint-label-text">Hint (optional)</span>
-                <input
-                  className="hint-input mono"
-                  type="text"
-                  placeholder="e.g. Famous for its wine..."
-                  maxLength={80}
-                  value={hint}
-                  onChange={(e) => setHint(e.target.value)}
-                />
-              </label>
-
-              <div className="sidebar-actions">
-                <button
-                  className="btn-secondary"
-                  onClick={() => setStep("pick")}
-                >
-                  ← Repin
-                </button>
-                <button
-                  className="btn-primary mono"
-                  onClick={() => setStep("share")}
-                >
-                  Get link →
-                </button>
+              style={{
+                flex: 1,
+                background: "#1a1a1a",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                {!mapsReady && (
+                  <div>
+                    <span style={{ fontSize: 28 }}>🌍</span>
+                    <div
+                      className="mono"
+                      style={{ fontSize: 12, color: "#888" }}
+                    >
+                      Loading Street View…
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
+          {step === "pick" && (
+            <div className="create-sidebar">
+              <div className="sidebar-inner">
+                <div className="sidebar-title mono">Drop a pin</div>
+                <p className="sidebar-body">
+                  Click anywhere on the map to place your mystery location.
+                  Friends will see Street View and have to guess where it is.
+                </p>
+
+                {pinLat !== null && (
+                  <div className="coord-display mono">
+                    <div className="coord-row">
+                      <span className="coord-label">lat</span>
+                      <span className="coord-val">{"█".repeat(8)}</span>
+                    </div>
+                    <div className="coord-row">
+                      <span className="coord-label">lng</span>
+                      <span className="coord-val">{"█".repeat(8)}</span>
+                    </div>
+                    <div className="coord-note">coordinates hidden</div>
+                  </div>
+                )}
+
+                <div className="sidebar-actions">
+                  <button
+                    className="btn-primary mono"
+                    disabled={pinLat === null}
+                    onClick={() => {
+                      if (leafletRef.current) {
+                        setPrevMapView({
+                          center: leafletRef.current.getCenter(),
+                          zoom: leafletRef.current.getZoom(),
+                        });
+                      }
+                      setStep("preview");
+                    }}
+                  >
+                    Preview Street View →
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {step === "preview" && pinLat !== null && pinLng !== null && (
+            <div className="create-sidebar">
+              <div className="sidebar-inner">
+                <div className="sidebar-title mono">Preview</div>
+                <p className="sidebar-body">
+                  This is what your friends will see. Look good? Add an optional
+                  hint, then generate the link.
+                </p>
+
+                <label className="hint-label">
+                  <span className="hint-label-text">Hint (optional)</span>
+                  <input
+                    className="hint-input mono"
+                    type="text"
+                    placeholder="e.g. Famous for its wine..."
+                    maxLength={80}
+                    value={hint}
+                    onChange={(e) => setHint(e.target.value)}
+                  />
+                </label>
+
+                <div className="sidebar-actions">
+                  <button
+                    className="btn-secondary"
+                    onClick={() => {
+                      // Destroy the panorama
+                      if (svPanoRef.current) {
+                        svPanoRef.current = null;
+                      }
+                      setStep("pick");
+                      setTimeout(() => {
+                        if (leafletRef.current) {
+                          leafletRef.current.invalidateSize();
+                          if (prevMapView) {
+                            leafletRef.current.setView(
+                              prevMapView.center,
+                              prevMapView.zoom,
+                              {
+                                animate: false,
+                              },
+                            );
+                          }
+                        }
+                      }, 50);
+                    }}
+                  >
+                    ← Repin
+                  </button>
+                  <button
+                    className="btn-primary mono"
+                    onClick={() => setStep("share")}
+                  >
+                    Get link →
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
