@@ -411,12 +411,7 @@ export const LOCATIONS: Location[] = [
     name: "Glen Affric, Scotland",
     hint: "Endor's forest moon in Return of the Jedi",
   },
-{
-  lat: 46.8182,
-  lng: 8.2275,
-  name: "Swiss Alps, Switzerland",
-  hint: "Where Skywalker trains among ancient snowbound peaks",
-},
+
 {
   lat: 35.3606,
   lng: 138.7274,
@@ -446,18 +441,6 @@ export const LOCATIONS: Location[] = [
   lng: 115.0920,
   name: "Bali Rice Terraces, Indonesia",
   hint: "Endless green steps that feel like a hidden temple world",
-},
-{
-  lat: 63.1324,
-  lng: -19.6156,
-  name: "Iceland Highlands",
-  hint: "A volcanic wasteland that feels like Mustafar before the fall",
-},
-{
-  lat: -24.6270,
-  lng: 134.4970,
-  name: "Uluru, Australia",
-  hint: "A sacred monolith rising from a desert like an ancient relic",
 },
 {
   lat: 36.5769,
