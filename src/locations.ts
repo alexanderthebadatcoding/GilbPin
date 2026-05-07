@@ -411,6 +411,66 @@ export const LOCATIONS: Location[] = [
     name: "Glen Affric, Scotland",
     hint: "Endor's forest moon in Return of the Jedi",
   },
+{
+  lat: 46.8182,
+  lng: 8.2275,
+  name: "Swiss Alps, Switzerland",
+  hint: "Where Skywalker trains among ancient snowbound peaks",
+},
+{
+  lat: 35.3606,
+  lng: 138.7274,
+  name: "Mount Fuji, Japan",
+  hint: "A lone sacred mountain watching over a hidden dojo",
+},
+{
+  lat: 69.6492,
+  lng: 18.9553,
+  name: "Tromsø, Norway",
+  hint: "A frozen world where starships might hide in the aurora",
+},
+{
+  lat: -16.5004,
+  lng: -68.1193,
+  name: "La Paz, Bolivia",
+  hint: "A city above the clouds, like a rebel outpost in the sky",
+},
+{
+  lat: 30.3285,
+  lng: 35.4444,
+  name: "Petra, Jordan",
+  hint: "An ancient red stone city carved like a forgotten Jedi archive",
+},
+{
+  lat: -8.3405,
+  lng: 115.0920,
+  name: "Bali Rice Terraces, Indonesia",
+  hint: "Endless green steps that feel like a hidden temple world",
+},
+{
+  lat: 63.1324,
+  lng: -19.6156,
+  name: "Iceland Highlands",
+  hint: "A volcanic wasteland that feels like Mustafar before the fall",
+},
+{
+  lat: -24.6270,
+  lng: 134.4970,
+  name: "Uluru, Australia",
+  hint: "A sacred monolith rising from a desert like an ancient relic",
+},
+{
+  lat: 36.5769,
+  lng: 136.6580,
+  name: "Kenrokuen Area, Japan",
+  hint: "A perfectly balanced garden world worthy of a royal senate",
+},
+{
+  lat: 37.8651,
+  lng: -119.5383,
+  name: "Yosemite Valley, USA",
+  hint: "A canyon of giants where echoes feel like the Force itself",
+}
 ];
 
 const SEED = 0xdeadbeef;
