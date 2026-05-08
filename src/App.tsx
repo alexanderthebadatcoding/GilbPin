@@ -22,6 +22,31 @@ function pickRounds(): Location[] {
   return shuffled(LOCATIONS).slice(0, ROUNDS);
 }
 
+function countryCodeToFlag(countryCode: string): string | null {
+  const normalized = countryCode.trim().toUpperCase();
+  if (/^[A-Z]{2}$/.test(normalized)) {
+    return String.fromCodePoint(
+      ...[...normalized].map((char) => 0x1f1e6 + char.charCodeAt(0) - 65),
+    );
+  }
+
+  const fallback: Record<string, string> = {
+    "UNITED STATES": "US",
+    "UNIT STATES": "US",
+    USA: "US",
+    "NEW ZEALAND": "NZ",
+    "UNITED KINGDOM": "GB",
+    "SOUTH KOREA": "KR",
+    "NORTH KOREA": "KP",
+    RUSSIA: "RU",
+    CHINA: "CN",
+    croatia: "HR",
+  };
+
+  const mapped = fallback[normalized];
+  return mapped ? countryCodeToFlag(mapped) : null;
+}
+
 // ─── Home screen ──────────────────────────────────────────────────────────────
 function HomeScreen({
   onPlay,
@@ -151,7 +176,7 @@ function PlayScreen({
 
   const distLabel =
     roundDist < 1.60934
-      ? `${(roundDist).toFixed(2)} km (${Math.round(roundDist * 1093.61).toLocaleString()} yd)`
+      ? `${roundDist.toFixed(2)} km (${Math.round(roundDist * 1093.61).toLocaleString()} yd)`
       : `${Math.round(roundDist).toLocaleString()} km (${Math.round(roundDist * 0.621371).toLocaleString()} mi)`;
 
   const emoji =
@@ -214,7 +239,11 @@ function PlayScreen({
               <div className="result-pts mono">
                 +{roundScore.toLocaleString()}
               </div>
-              <div className="result-place">{loc.name}</div>
+              <div className="result-place">
+                {countryCodeToFlag(loc.name)
+                  ? `${countryCodeToFlag(loc.name)} ${loc.name}`
+                  : loc.name}
+              </div>
               {phase === "result" ? (
                 <button className="btn-primary mono" onClick={handleNext}>
                   Next round →
