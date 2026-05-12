@@ -263,7 +263,7 @@ function PlayScreen({
                 </div>
               )}
               <span className="mono url-text">
-                Share this location with your friends: gilbpin.vercel.app/?loc=
+                gilbpin.vercel.app/?loc=
                 {encodedLoc}
               </span>
             </div>
