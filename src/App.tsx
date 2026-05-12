@@ -67,11 +67,11 @@ function HomeScreen({
 
         {customPin && (
           <div className="custom-pin-banner">
-            <span style={{ fontSize: 20 }}>🎯</span>
+            <span style={{ fontSize: 24 }}>🎯</span>
             <div>
               <div
                 className="mono"
-                style={{ fontSize: 14, color: "var(--text)" }}
+                style={{ fontSize: 18, color: "var(--text)" }}
               >
                 Someone challenged you!
               </div>
@@ -304,7 +304,7 @@ function PlayScreen({
 
       <footer className="url-bar">
         <span className="mono url-text">
-          gilbpin.vercel.app/play?loc={encodedLoc}&r={round + 1}
+          gilbpin.vercel.app/?loc={encodedLoc}
         </span>
       </footer>
     </div>

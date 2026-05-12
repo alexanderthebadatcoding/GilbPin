@@ -1,19 +1,19 @@
-import { useEffect, useRef } from 'react'
-import { useGoogleMaps } from './useGoogleMaps'
-import type { Location } from './locations'
+import { useEffect, useRef } from "react";
+import { useGoogleMaps } from "./useGoogleMaps";
+import type { Location } from "./locations";
 
 interface Props {
-  location: Location
+  location: Location;
 }
 
 export function StreetView({ location }: Props) {
-  const ref = useRef<HTMLDivElement>(null)
-  const mapsReady = useGoogleMaps()
+  const ref = useRef<HTMLDivElement>(null);
+  const mapsReady = useGoogleMaps();
 
   useEffect(() => {
-    if (!mapsReady || !ref.current) return
+    if (!mapsReady || !ref.current) return;
 
-    const sv = new google.maps.StreetViewService()
+    const sv = new google.maps.StreetViewService();
     sv.getPanorama(
       { location: { lat: location.lat, lng: location.lng }, radius: 150 },
       (data, status) => {
@@ -29,31 +29,33 @@ export function StreetView({ location }: Props) {
             linksControl: false,
             panControl: false,
             zoomControl: false,
-          })
+          });
         }
-      }
-    )
-  }, [mapsReady, location])
+      },
+    );
+  }, [mapsReady, location]);
 
   if (!mapsReady) {
     return (
       <div style={fallbackStyle}>
         <span style={{ fontSize: 32 }}>🌍</span>
-        <p className="mono" style={{ fontSize: 12, color: '#888' }}>Loading Street View…</p>
+        <p className="mono" style={{ fontSize: 12, color: "#888" }}>
+          Loading Street View…
+        </p>
       </div>
-    )
+    );
   }
 
-  return <div ref={ref} style={{ width: '100%', height: '100%' }} />
+  return <div ref={ref} style={{ width: "100%", height: "100%" }} />;
 }
 
 const fallbackStyle: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   gap: 12,
-  background: '#1a1a1a',
-}
+  background: "#1a1a1a",
+};
