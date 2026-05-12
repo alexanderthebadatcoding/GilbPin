@@ -263,7 +263,7 @@ function PlayScreen({
                 </div>
               )}
               <span className="mono url-text">
-                gilbpin.vercel.app/?loc=
+                https://gilbpin.vercel.app/?loc=
                 {encodedLoc}
               </span>
             </div>
