@@ -262,6 +262,10 @@ function PlayScreen({
                   </button>
                 </div>
               )}
+              <span className="mono url-text">
+                Share this location with your friends: gilbpin.vercel.app/?loc=
+                {encodedLoc}
+              </span>
             </div>
           )}
         </div>
@@ -303,9 +307,7 @@ function PlayScreen({
       </main>
 
       <footer className="url-bar">
-        <span className="mono url-text">
-          gilbpin.vercel.app/?loc={encodedLoc}
-        </span>
+        <span className="mono url-text">Created by Gilbster</span>
       </footer>
     </div>
   );
