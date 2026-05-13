@@ -4,9 +4,10 @@ import type { Location } from "./locations";
 
 interface Props {
   location: Location;
+  noMove?: boolean;
 }
 
-export function StreetView({ location }: Props) {
+export function StreetView({ location, noMove }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapsReady = useGoogleMaps();
 
@@ -29,6 +30,7 @@ export function StreetView({ location }: Props) {
             linksControl: false,
             panControl: false,
             zoomControl: false,
+            clickToGo: !noMove, // ← add this
           });
         }
       },

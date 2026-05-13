@@ -221,7 +221,7 @@ function PlayScreen({
       <main className="main">
         {/* Street View */}
         <div className="sv-panel">
-          <StreetView key={`sv-${round}`} location={loc} />
+          <StreetView key={`sv-${round}`} location={loc} noMove={loc.noMove} />
 
           {(phase === "result" || phase === "final") && (
             <div className="result-overlay">

@@ -5,6 +5,7 @@ export interface Location {
   lng: number;
   name: string;
   hint?: string;
+  noMove?: boolean;
 }
 
 export const LOCATIONS: Location[] = locationsData;
@@ -51,6 +52,7 @@ export function parsePinFromURL(): (Location & { isCustom: true }) | null {
   const coords = deobfuscate(loc);
   if (!coords) return null;
   const hint = params.get("hint") ?? "No hint given";
+  const noMove = params.get("nomove") !== null;
   return { ...coords, name: "Custom Pin", hint, isCustom: true };
 }
 
