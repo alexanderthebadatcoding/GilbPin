@@ -53,7 +53,7 @@ export function parsePinFromURL(): (Location & { isCustom: true }) | null {
   if (!coords) return null;
   const hint = params.get("hint") ?? "No hint given";
   const noMove = params.get("nomove") !== null;
-  return { ...coords, name: "Custom Pin", hint, isCustom: true };
+  return { ...coords, name: "Custom Pin", hint, noMove, isCustom: true };
 }
 
 export function haversine(

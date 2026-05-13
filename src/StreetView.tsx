@@ -32,6 +32,12 @@ export function StreetView({ location, noMove }: Props) {
             zoomControl: false,
             clickToGo: !noMove, // ← add this
           });
+          // ← add this block
+          if (noMove) {
+            pano.addListener("position_changed", () => {
+              pano.setPosition({ lat: location.lat, lng: location.lng });
+            });
+          }
         }
       },
     );
