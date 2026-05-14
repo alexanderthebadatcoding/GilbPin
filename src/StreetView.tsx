@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGoogleMaps } from "./useGoogleMaps";
 import type { Location } from "./locations";
 
@@ -10,6 +10,9 @@ interface Props {
 export function StreetView({ location, noMove }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const mapsReady = useGoogleMaps();
+  const [status, setStatus] = useState<google.maps.StreetViewStatus | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!mapsReady || !ref.current) return;
@@ -18,6 +21,7 @@ export function StreetView({ location, noMove }: Props) {
     sv.getPanorama(
       { location: { lat: location.lat, lng: location.lng }, radius: 150 },
       (data, status) => {
+        setStatus(status);
         if (status === google.maps.StreetViewStatus.OK && ref.current) {
           const initialPov = { heading: Math.random() * 360, pitch: 0 };
           const pano = new google.maps.StreetViewPanorama(ref.current, {
@@ -34,11 +38,20 @@ export function StreetView({ location, noMove }: Props) {
             clickToGo: !noMove,
           });
           if (noMove) {
+            let resetting = false;
             pano.addListener("position_changed", () => {
-              pano.setPosition({ lat: location.lat, lng: location.lng });
+              if (!resetting) {
+                resetting = true;
+                pano.setPosition({ lat: location.lat, lng: location.lng });
+                resetting = false;
+              }
             });
             pano.addListener("pov_changed", () => {
-              pano.setPov(initialPov);
+              if (!resetting) {
+                resetting = true;
+                pano.setPov(initialPov);
+                resetting = false;
+              }
             });
           }
         }
@@ -46,12 +59,23 @@ export function StreetView({ location, noMove }: Props) {
     );
   }, [mapsReady, location]);
 
-  if (!mapsReady) {
+  if (!mapsReady || status === null) {
     return (
       <div style={fallbackStyle}>
         <span style={{ fontSize: 32 }}>🌍</span>
         <p className="mono" style={{ fontSize: 12, color: "#888" }}>
           Loading Street View…
+        </p>
+      </div>
+    );
+  }
+
+  if (status !== google.maps.StreetViewStatus.OK) {
+    return (
+      <div style={fallbackStyle}>
+        <span style={{ fontSize: 32 }}>🚫</span>
+        <p className="mono" style={{ fontSize: 12, color: "#888" }}>
+          Street View not available
         </p>
       </div>
     );
