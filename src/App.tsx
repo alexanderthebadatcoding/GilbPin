@@ -143,6 +143,7 @@ function PlayScreen({
   const [roundScore, setRoundScore] = useState(0);
   const [roundDist, setRoundDist] = useState(0);
   const [hintVisible, setHintVisible] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
 
   const loc = locations[round];
   const encodedLoc = obfuscate(loc.lat, loc.lng);
@@ -173,6 +174,12 @@ function PlayScreen({
     setGuessLng(null);
     setHintVisible(false);
   };
+
+  useEffect(() => {
+    if (!shareCopied) return;
+    const timeout = window.setTimeout(() => setShareCopied(false), 2000);
+    return () => window.clearTimeout(timeout);
+  }, [shareCopied]);
 
   const distLabel =
     roundDist < 1.60934
@@ -262,16 +269,21 @@ function PlayScreen({
                   </button>
                 </div>
               )}
-              <span 
-                className="mono url-text" 
+              <span
+                className="mono share-url-box"
                 onClick={() => {
                   const text = `https://gilbpin.vercel.app/?loc=${encodedLoc}`;
                   navigator.clipboard.writeText(text);
+                  setShareCopied(true);
                 }}
                 style={{ cursor: "pointer" }}
               >
-                https://gilbpin.vercel.app/?loc=
-                {encodedLoc}
+                <span className="share-url-text">
+                  https://gilbpin.vercel.app/?loc={encodedLoc}
+                </span>
+                <span className="copy-badge">
+                  {shareCopied ? "✓ Copied" : "Copy"}
+                </span>
               </span>
             </div>
           )}
