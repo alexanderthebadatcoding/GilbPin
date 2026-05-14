@@ -18,9 +18,16 @@ export function StreetView({ location, noMove }: Props) {
     if (!mapsReady || !ref.current) return;
 
     const sv = new google.maps.StreetViewService();
+    const timeout = setTimeout(() => {
+      if (status === null) {
+        setStatus(google.maps.StreetViewStatus.UNKNOWN_ERROR);
+      }
+    }, 5000); // 5 second timeout
+
     sv.getPanorama(
       { location: { lat: location.lat, lng: location.lng }, radius: 150 },
       (data, status) => {
+        clearTimeout(timeout);
         setStatus(status);
         if (status === google.maps.StreetViewStatus.OK && ref.current) {
           const initialPov = { heading: Math.random() * 360, pitch: 0 };
@@ -57,6 +64,8 @@ export function StreetView({ location, noMove }: Props) {
         }
       },
     );
+
+    return () => clearTimeout(timeout);
   }, [mapsReady, location]);
 
   if (!mapsReady || status === null) {
