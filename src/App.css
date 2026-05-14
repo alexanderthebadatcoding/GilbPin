@@ -617,6 +617,18 @@
   color: var(--text-faint);
 }
 
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.checkbox-text {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 .sidebar-actions {
   margin-top: auto;
   display: flex;

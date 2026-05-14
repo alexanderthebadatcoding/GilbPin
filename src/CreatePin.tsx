@@ -25,6 +25,7 @@ export function CreatePin({ onBack }: Props) {
     center: L.LatLngExpression;
     zoom: number;
   } | null>(null);
+  const [noMove, setNoMove] = useState(false);
 
   const mapsReady = useGoogleMaps();
 
@@ -107,7 +108,7 @@ export function CreatePin({ onBack }: Props) {
 
   const shareUrl =
     pinLat !== null && pinLng !== null
-      ? `${window.location.origin}${window.location.pathname}?loc=${obfuscate(pinLat, pinLng)}${hint.trim() ? `&hint=${encodeURIComponent(hint.trim())}` : ""}`
+      ? `${window.location.origin}${window.location.pathname}?loc=${obfuscate(pinLat, pinLng)}${hint.trim() ? `&hint=${encodeURIComponent(hint.trim())}` : ""}${noMove ? "&nomove" : ""}`
       : "";
 
   const handleCopy = () => {
@@ -249,6 +250,17 @@ export function CreatePin({ onBack }: Props) {
                     value={hint}
                     onChange={(e) => setHint(e.target.value)}
                   />
+                </label>
+
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={noMove}
+                    onChange={(e) => setNoMove(e.target.checked)}
+                  />
+                  <span className="checkbox-text">
+                    Disable movement in Street View
+                  </span>
                 </label>
 
                 <div className="sidebar-actions">

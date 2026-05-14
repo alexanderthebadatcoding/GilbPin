@@ -19,9 +19,10 @@ export function StreetView({ location, noMove }: Props) {
       { location: { lat: location.lat, lng: location.lng }, radius: 150 },
       (data, status) => {
         if (status === google.maps.StreetViewStatus.OK && ref.current) {
-          new google.maps.StreetViewPanorama(ref.current, {
+          const initialPov = { heading: Math.random() * 360, pitch: 0 };
+          const pano = new google.maps.StreetViewPanorama(ref.current, {
             position: { lat: location.lat, lng: location.lng },
-            pov: { heading: Math.random() * 360, pitch: 0 },
+            pov: initialPov,
             zoom: 1,
             addressControl: false,
             fullscreenControl: false,
@@ -30,12 +31,14 @@ export function StreetView({ location, noMove }: Props) {
             linksControl: false,
             panControl: false,
             zoomControl: false,
-            clickToGo: !noMove, // ← add this
+            clickToGo: !noMove,
           });
-          // ← add this block
           if (noMove) {
             pano.addListener("position_changed", () => {
               pano.setPosition({ lat: location.lat, lng: location.lng });
+            });
+            pano.addListener("pov_changed", () => {
+              pano.setPov(initialPov);
             });
           }
         }

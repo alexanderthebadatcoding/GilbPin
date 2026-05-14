@@ -262,7 +262,14 @@ function PlayScreen({
                   </button>
                 </div>
               )}
-              <span className="mono url-text">
+              <span 
+                className="mono url-text" 
+                onClick={() => {
+                  const text = `https://gilbpin.vercel.app/?loc=${encodedLoc}`;
+                  navigator.clipboard.writeText(text);
+                }}
+                style={{ cursor: "pointer" }}
+              >
                 https://gilbpin.vercel.app/?loc=
                 {encodedLoc}
               </span>
